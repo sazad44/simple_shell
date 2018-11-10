@@ -1,4 +1,4 @@
-#include "holberton.h"
+#include "simple_shell.h"
 
 void proc(char *input)
 {
@@ -35,11 +35,15 @@ void proc(char *input)
 	}
 	else if (child_pid == 0)
 	{
+		if (*inputcpy == '\0' || arrtok[0] == NULL)
+			exit(98);
 		if (execve(arrtok[0], arrtok, NULL) == -1)
-			perror("Error");
+			perror(inputcpy);
 	}
 	else if (child_pid != 0)
 	{
+		if (*inputcpy == '\0')
+			return;
 		free(inputcpy);
 		free(arrtok);
 		wait(&status);
