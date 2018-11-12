@@ -1,4 +1,4 @@
-#include "simple_shell.h"
+nclude "simple_shell.h"
 
 /**
  * _strlen - Returns the number of characters in a string.
@@ -15,3 +15,16 @@ unsigned int _strlen(char *str)
 
 	return (len);
 }
+
+char *_strcpy(char *src, char *dest)
+{
+	int i;
+
+	if (src == NULL || dest == NULL)
+		return (NULL);
+	for (i = 0; src[i]; i++)
+		dest[i] = src[i];
+	dest[i] = src[i];
+	return (dest);
+}
+
