@@ -1,4 +1,4 @@
-nclude "simple_shell.h"
+#include "simple_shell.h"
 
 /**
  * _strlen - Returns the number of characters in a string.
@@ -28,3 +28,14 @@ char *_strcpy(char *src, char *dest)
 	return (dest);
 }
 
+int count_tokens(char *input, const char delim)
+{
+	int i, count;
+
+	token = strtok(input, delim);
+
+	for (count = 0; token; count++)
+		token = strtok(NULL, delim);
+
+	return (count);
+}
