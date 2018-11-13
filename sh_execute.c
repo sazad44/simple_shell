@@ -1,5 +1,11 @@
 #include "simple_shell.h"
 
+/**
+ * proc - a function to execute processes and tokenize a string input
+ * @input: the input string to be tokenized and executed
+ * @ipname: the name of the program being run
+ * Return: an integer to indicate success (1) or failure (0)
+ */
 int proc(char *input, char *ipname)
 {
 	pid_t child_pid;
@@ -15,30 +21,24 @@ int proc(char *input, char *ipname)
 	arrtok = malloc(sizeof(token) * (i + 1));
 	if (arrtok == NULL)
 		return (0);
-	token = strtok(input, " ");
-	for (i = 0; token; i++)
-	{
-		arrtok[i] = token;
-		token = strtok(NULL, " ");
-	}
-	arrtok[i] = NULL;
+	arrtok = create_arrtok(input, arrtok);
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		free(inputcpy);
-		free(arrtok);
+		_free(2, inputcpy, arrtok);
 		perror("Error:");
 		return (0);
 	}
 	else if (child_pid == 0)
 	{
 		if (*inputcpy == '\0' || arrtok[0] == NULL)
-			exit(98);
+		{
+			_free(2, inputcpy, arrtok);
+			return (1);
+		}
 		if (execve(arrtok[0], arrtok, NULL) == -1)
 		{
-			free(inputcpy);
-			free(arrtok);
-			free(input);
+			_free(2, inputcpy, arrtok);
 			perror(ipname);
 			return (1);
 		}
@@ -46,8 +46,7 @@ int proc(char *input, char *ipname)
 	else if (child_pid != 0)
 	{
 		wait(&status);
-		free(inputcpy);
-		free(arrtok);
+		_free(2, inputcpy, arrtok);
 	}
 	return (0);
 }
@@ -63,17 +62,17 @@ int niproc(char *av[])
 	if (child_pid == -1)
 	{
 		perror("Fork Error");
-		return (1);
+		return (0);
 	}
 	else if (child_pid == 0)
 	{
 		if (execve(av[0], av, NULL) == -1)
 		{
 			perror(prname);
-			return (1);
+			return (0);
 		}
 	}
 	else if (child_pid != 0)
 		wait(&status);
-	return (0);
+	return (1);
 }

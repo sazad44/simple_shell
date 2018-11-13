@@ -1,5 +1,11 @@
 #include "simple_shell.h"
 
+/**
+ * main - Entry point
+ * @argc: the number of arguments made to the program
+ * @argv: an array of pointers to the arguments to the program
+ * Return: Always 0 (Success)
+ */
 int main(int argc, char *argv[])
 {
 	int i;
@@ -8,26 +14,20 @@ int main(int argc, char *argv[])
 
 	if (argc > 1)
 	{
-		if (!niproc(argv))
+		if (niproc(argv))
 			return (0);
 		return (1);
 	}
 	if (!isatty(STDIN_FILENO))
 	{
 		i = getline(&input, &isize, stdin);
-		if (i < 0)
-		{
-			write(1, "\n", 1);
-			free(input);
-			exit(98);
-		}
-		for (i = 0; input[i]; i++)
-		{
-			if (input[i] == '\n')
-				input[i] = '\0';
-		}
+		vet_input(i, input);
 		if (proc(input, argv[0]) == 1)
-			exit(98);
+		{
+			_free(1, input);
+			return (1);
+		}
+		_free(1, input);
 	}
 	else
 	{
@@ -35,17 +35,7 @@ int main(int argc, char *argv[])
 		{
 			write(1, "$ ", 2);
 			i = getline(&input, &isize, stdin);
-			if (i < 0)
-			{
-				write(1, "\n", 3);
-				free(input);
-				exit(98);
-			}
-			for (i = 0; input[i]; i++)
-			{
-				if (input[i] == '\n')
-					input[i] = '\0';
-			}
+			vet_input(i, input);
 			if (proc(input, argv[0]) == 1)
 				break;
 		}

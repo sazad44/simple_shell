@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <stdarg.h>
 
 char **_strtok(char *str);
 
@@ -19,4 +20,10 @@ unsigned int _strlen(char *str);
 int count_tokens(char *input, const char *delim);
 
 int niproc(char *av[]);
+
+char **create_arrtok(char *input, char **arrtok);
+
+void vet_input(int i, char *input);
+
+void _free(unsigned int num, ...);
 #endif
