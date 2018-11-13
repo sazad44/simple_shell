@@ -6,10 +6,14 @@ int main(int argc, char *argv[])
 	size_t isize = 0;
 	char *input = NULL;
 
-	(void)argc;
-	while(1)
+	if (argc > 1)
 	{
-		write(1, "$ ", 2);
+		if (!niproc(argv))
+			return (0);
+		return (1);
+	}
+	if (!isatty(STDIN_FILENO))
+	{
 		i = getline(&input, &isize, stdin);
 		if (i < 0)
 		{
@@ -23,8 +27,30 @@ int main(int argc, char *argv[])
 				input[i] = '\0';
 		}
 		if (proc(input, argv[0]) == 1)
-			break;
+			exit(98);
 	}
-	free(input);
+	else
+	{
+		while (1)
+		{
+			write(1, "$ ", 2);
+			i = getline(&input, &isize, stdin);
+			if (i < 0)
+			{
+				write(1, "\n", 3);
+				free(input);
+				exit(98);
+			}
+			for (i = 0; input[i]; i++)
+			{
+				if (input[i] == '\n')
+					input[i] = '\0';
+			}
+			if (proc(input, argv[0]) == 1)
+				break;
+		}
+		free(input);
+		return (0);
+	}
 	return (0);
 }
