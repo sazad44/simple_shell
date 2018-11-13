@@ -16,6 +16,12 @@ unsigned int _strlen(char *str)
 	return (len);
 }
 
+/**
+ * _strcpy - copies string from one pointer to another
+ * @src: the pointer to copy from
+ * @dest: the pointer to copy to
+ * Return: the char pointer of the destination pointer
+ */
 char *_strcpy(char *src, char *dest)
 {
 	int i;
@@ -28,6 +34,12 @@ char *_strcpy(char *src, char *dest)
 	return (dest);
 }
 
+/**
+ * count_tokens - counts the number of tokens to be copied
+ * @input: the input string to analyze for tokens
+ * @delim: the delimeter string to base tokenization on
+ * Return: the number of tokens in the input string
+ */
 int count_tokens(char *input, const char *delim)
 {
 	int count;

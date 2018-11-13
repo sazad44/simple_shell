@@ -25,6 +25,8 @@ int proc(char *input, char *ipname)
 	child_pid = fork();
 	if (child_pid == -1)
 	{
+		free(inputcpy);
+		free(arrtok);
 		perror("Error:");
 		return (0);
 	}
@@ -34,15 +36,18 @@ int proc(char *input, char *ipname)
 			exit(98);
 		if (execve(arrtok[0], arrtok, NULL) == -1)
 		{
+			free(inputcpy);
+			free(arrtok);
+			free(input);
 			perror(ipname);
 			return (1);
 		}
 	}
 	else if (child_pid != 0)
 	{
+		wait(&status);
 		free(inputcpy);
 		free(arrtok);
-		wait(&status);
 	}
 	return (0);
 }

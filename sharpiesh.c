@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 		i = getline(&input, &isize, stdin);
 		if (i < 0)
 		{
-			write(1, "\n", 3);
+			write(1, "\n", 1);
 			free(input);
 			exit(98);
 		}

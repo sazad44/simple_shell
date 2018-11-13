@@ -19,5 +19,4 @@ unsigned int _strlen(char *str);
 int count_tokens(char *input, const char *delim);
 
 int niproc(char *av[]);
-
 #endif
