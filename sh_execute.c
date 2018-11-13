@@ -46,3 +46,29 @@ int proc(char *input, char *ipname)
 	}
 	return (0);
 }
+
+int niproc(char *av[])
+{
+	pid_t child_pid;
+	char *prname = av[0];
+	int status;
+
+	av++;
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("Fork Error");
+		return (1);
+	}
+	else if (child_pid == 0)
+	{
+		if (execve(av[0], av, NULL) == -1)
+		{
+			perror(prname);
+			return (1);
+		}
+	}
+	else if (child_pid != 0)
+		wait(&status);
+	return (0);
+}
