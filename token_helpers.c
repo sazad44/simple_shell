@@ -28,9 +28,10 @@ char *_strcpy(char *src, char *dest)
 	return (dest);
 }
 
-int count_tokens(char *input, const char delim)
+int count_tokens(char *input, const char *delim)
 {
-	int i, count;
+	int count;
+	char *token;
 
 	token = strtok(input, delim);
 

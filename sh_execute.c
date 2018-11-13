@@ -1,25 +1,20 @@
 #include "simple_shell.h"
 
-void proc(char *input)
+int proc(char *input, char *ipname)
 {
 	pid_t child_pid;
 	int status, i;
 	char **arrtok, *token, *inputcpy;
 
-	for (i = 0; input[i]; i++)
-		;
+	i = _strlen(input);
 	inputcpy = malloc(sizeof(char) * (i + 1));
 	if (inputcpy == NULL)
-		return;
-	for (i = 0; input[i]; i++)
-		inputcpy[i] = input[i];
-	inputcpy[i] = '\0';
-	token = strtok(inputcpy, " ");
-	for (i = 0; token; i++)
-		token = strtok(NULL, " ");
+		return (0);
+	inputcpy = _strcpy(input, inputcpy);
+	i = count_tokens(inputcpy, " ");
 	arrtok = malloc(sizeof(token) * (i + 1));
 	if (arrtok == NULL)
-		return;
+		return (0);
 	token = strtok(input, " ");
 	for (i = 0; token; i++)
 	{
@@ -31,21 +26,23 @@ void proc(char *input)
 	if (child_pid == -1)
 	{
 		perror("Error:");
-		return;
+		return (0);
 	}
 	else if (child_pid == 0)
 	{
 		if (*inputcpy == '\0' || arrtok[0] == NULL)
 			exit(98);
 		if (execve(arrtok[0], arrtok, NULL) == -1)
-			perror(inputcpy);
+		{
+			perror(ipname);
+			return (1);
+		}
 	}
 	else if (child_pid != 0)
 	{
-		if (*inputcpy == '\0')
-			return;
 		free(inputcpy);
 		free(arrtok);
 		wait(&status);
 	}
+	return (0);
 }
