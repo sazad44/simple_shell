@@ -6,7 +6,7 @@
  * @argv: an array of pointers to the arguments to the program
  * Return: Always 0 (Success)
  */
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char **env)
 {
 	int i;
 	size_t isize = 0;
