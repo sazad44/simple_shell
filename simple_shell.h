@@ -28,7 +28,7 @@ int _strcmp(char *s1, char *s2);
 
 char *_strcat(char *dest, const char *src, const char *delim);
 
-char *_getenv(const char *name);
+char *_getenv(char **env, const char *name);
 
 int proc(char *input, char *ipname, char **env);
 
