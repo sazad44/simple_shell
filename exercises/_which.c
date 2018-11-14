@@ -1,13 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include "simple_shell.h"
 
 int main(int argc, char *argv[])
 {
-	int i, j, k, n, m = 0;
+	int i, j, k, n, m = 0, flag = 0;
 	char *buf, *path, *token, *pathcpy;
 	struct stat *bufstat = NULL;
 
@@ -19,22 +14,15 @@ int main(int argc, char *argv[])
 		return (1);
 	for (k = 1; k < argc; k++)
 	{
-		for (i = 0; path[i]; i++)
-			;
+		i = _strlen(path), flag = 0;
 		pathcpy = malloc(sizeof(char) * (i + 1));
 		if (pathcpy == NULL)
 			return (1);
-		for (i = 0; path[i]; i++)
-			pathcpy[i] = path[i];
-		pathcpy[i] = '\0';
+		pathcpy = _strcpy(path, pathcpy);
 		token = strtok(pathcpy, ":");
 		while (token)
 		{
-			m = 0;
-			for (i = 0; argv[k][i]; i++)
-				;
-			for (j = 0; token[j]; j++)
-				;
+			m = 0, i = _strlen(argv[k]), j = _strlen(token);
 			buf = malloc(sizeof(char) * (i + j + 4));
 			if (buf == NULL)
 				return (1);
@@ -43,20 +31,21 @@ int main(int argc, char *argv[])
 			buf[n++] = '/';
 			for (; n < (i + j + 2); n++)
 				buf[n] = argv[k][m++];
-			buf[n] = '\n';
-			n++;
-			buf[n] = '\0';
+			buf[n++] = '\n', buf[n] = '\0';
 			if (stat(buf, bufstat) == 0)
 			{
 				write(1, buf, (i + j + 3));
+				flag = 1;
 				break;
 			}
 			token = strtok(NULL, ":");
-			free(buf);
+			_free(1, buf);
 		}
-		free(pathcpy);
-		free(buf);
+		if (flag == 1)
+			_free(2, pathcpy, buf);
+		else
+			_free(1, pathcpy);
 	}
-	free(bufstat);
+	_free(1, bufstat);
 	return (0);
 }

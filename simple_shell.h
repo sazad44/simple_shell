@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdarg.h>
+#include <sys/stat.h>
 
 /**
  * struct built - Struct built
@@ -29,7 +30,7 @@ char *_strcat(char *dest, const char *src, const char *delim);
 
 char *_getenv(const char *name);
 
-int proc(char *input, char *ipname);
+int proc(char *input, char *ipname, char **env);
 
 char *_strcpy(char *src, char *dest);
 
@@ -45,4 +46,5 @@ void vet_input(int i, char *input);
 
 void _free(unsigned int num, ...);
 
+char *transform_tok(char *command, char **env);
 #endif

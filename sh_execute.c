@@ -15,19 +15,20 @@ int proc(char *input, char *ipname)
 	i = _strlen(input);
 	inputcpy = malloc(sizeof(char) * (i + 1));
 	if (inputcpy == NULL)
-		return (0);
+		return (1);
 	inputcpy = _strcpy(input, inputcpy);
 	i = count_tokens(inputcpy, " ");
 	arrtok = malloc(sizeof(token) * (i + 1));
 	if (arrtok == NULL)
-		return (0);
+		return (1);
 	arrtok = create_arrtok(input, arrtok);
+	arrtok[0] = transform_tok(arrtok[0], env);
 	child_pid = fork();
 	if (child_pid == -1)
 	{
 		_free(2, inputcpy, arrtok);
 		perror("Error:");
-		return (0);
+		return (1);
 	}
 	else if (child_pid == 0)
 	{
