@@ -25,29 +25,30 @@ void _free(unsigned int num, ...)
  */
 char *_getenv(char **env, const char *name)
 {
-	extern char **environ;
 	const char *namecpy;
 	int i, j;
 
-	for (i = 0; environ[i]; i++)
+	for (i = 0; env[i]; i++)
 	{
-		for (j = 0; environ[i][j]; j++)
+		for (j = 0; env[i][j]; j++)
 		{
 			namecpy = name;
-			while (environ[i][j] == *namecpy)
+			while (env[i][j] == *namecpy)
 			{
 				j++;
 				namecpy++;
 			}
 			if (*namecpy == '\0')
 			{
-				environ[i] += j + 1;
-				return (environ[i]);
+				env[i] += j + 1;
+				return (env[i]);
 			}
 		}
 	}
 
 	return (NULL);
+}
+
 /**
  * transform_tok - converts a token to its full path if it can be found in PATH
  * @command: the command token to be transformed to its full path if applicable
