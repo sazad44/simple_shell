@@ -9,7 +9,25 @@
 #include <sys/wait.h>
 #include <stdarg.h>
 
-char **_strtok(char *str);
+/**
+ * struct built - Struct built
+ *
+ * @cmd: The command
+ * @f: The function associated
+ */
+typedef struct built
+{
+	char *cmd;
+	void (*f)(char *input);
+} built_t;
+
+char **_strtok(char *str, const char *delim);
+
+int _strcmp(char *s1, char *s2);
+
+char *_strcat(char *dest, const char *src, const char *delim);
+
+char *_getenv(const char *name);
 
 int proc(char *input, char *ipname);
 
@@ -26,4 +44,5 @@ char **create_arrtok(char *input, char **arrtok);
 void vet_input(int i, char *input);
 
 void _free(unsigned int num, ...);
+
 #endif
