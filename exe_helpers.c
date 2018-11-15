@@ -57,11 +57,11 @@ char *_getenv(char **env, const char *name)
  */
 char *transform_tok(char *command, char **env)
 {
-	int i, j, k, n, m = 0, flag = 0;
+	int i, j;
 	char *buf, *path, *token, *pathcpy;
 	struct stat *bufstat = NULL;
 
-	path = _getenv("PATH", env);
+	path = _getenv(env, "PATH");
 	bufstat = malloc(sizeof(struct stat));
 	if (bufstat == NULL)
 		return (NULL);
@@ -73,16 +73,12 @@ char *transform_tok(char *command, char **env)
 	token = strtok(pathcpy, ":");
 	while (token)
 	{
-		m = 0, i = _strlen(command), j = _strlen(token);
+		i = _strlen(command), j = _strlen(token);
 		buf = malloc(sizeof(char) * (i + j + 3));
 		if (buf == NULL)
 			return (NULL);
-		for (n = 0; n < j; n++)
-			buf[n] = token[n];
-		buf[n++] = '/';
-		for (; n < (i + j + 2); n++)
-			buf[n] = command[m++];
-		buf[n] = '\0';
+		buf = _strcat(buf, token, NULL);
+		buf = _strcat(buf, command, "/");
 		if (stat(buf, bufstat) == 0)
 		{
 			_free(2, pathcpy, bufstat);

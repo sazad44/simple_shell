@@ -22,7 +22,7 @@ int main(int argc, char *argv[], char **env)
 	{
 		i = getline(&input, &isize, stdin);
 		vet_input(i, input);
-		if (proc(input, argv[0]) == 1)
+		if (proc(input, argv[0], env) == 1)
 		{
 			_free(1, input);
 			return (1);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[], char **env)
 			write(1, "$ ", 2);
 			i = getline(&input, &isize, stdin);
 			vet_input(i, input);
-			if (proc(input, argv[0]) == 1)
+			if (proc(input, argv[0], env) == 1)
 				break;
 		}
 		free(input);

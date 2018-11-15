@@ -6,7 +6,7 @@
  * @ipname: the name of the program being run
  * Return: an integer to indicate success (1) or failure (0)
  */
-int proc(char *input, char *ipname)
+int proc(char *input, char *ipname, char **env)
 {
 	pid_t child_pid;
 	int status, i;
@@ -37,7 +37,7 @@ int proc(char *input, char *ipname)
 			_free(2, inputcpy, arrtok);
 			return (1);
 		}
-		if (execve(arrtok[0], arrtok, NULL) == -1)
+		if (execve(arrtok[0], arrtok, env) == -1)
 		{
 			_free(2, inputcpy, arrtok);
 			perror(ipname);
@@ -47,7 +47,7 @@ int proc(char *input, char *ipname)
 	else if (child_pid != 0)
 	{
 		wait(&status);
-		_free(2, inputcpy, arrtok);
+		_free(3, arrtok[0], inputcpy, arrtok);
 	}
 	return (0);
 }
