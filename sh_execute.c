@@ -20,13 +20,17 @@ int proc(char *input, char *ipname, char **env)
 	i = count_tokens(inputcpy, " ");
 	arrtok = malloc(sizeof(token) * (i + 1));
 	if (arrtok == NULL)
+	{
+		_free(1, inputcpy);
 		return (1);
+	}
 	arrtok = create_arrtok(input, arrtok);
 	arrtok[0] = transform_tok(arrtok[0], env);
+	printf("%s\n", arrtok[0]);
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		_free(2, inputcpy, arrtok);
+		_free(3, arrtok[0], inputcpy, arrtok);
 		perror("Error:");
 		return (1);
 	}
@@ -34,12 +38,12 @@ int proc(char *input, char *ipname, char **env)
 	{
 		if (*inputcpy == '\0' || arrtok[0] == NULL)
 		{
-			_free(2, inputcpy, arrtok);
+			_free(3, arrtok[0], inputcpy, arrtok);
 			return (1);
 		}
 		if (execve(arrtok[0], arrtok, env) == -1)
 		{
-			_free(2, inputcpy, arrtok);
+			_free(3, arrtok[0], inputcpy, arrtok);
 			perror(ipname);
 			return (1);
 		}

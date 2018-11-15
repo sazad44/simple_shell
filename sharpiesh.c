@@ -39,7 +39,7 @@ int main(int argc, char *argv[], char **env)
 			if (proc(input, argv[0], env) == 1)
 				break;
 		}
-		free(input);
+		_free(1, input);
 		return (0);
 	}
 	return (0);

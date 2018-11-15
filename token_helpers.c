@@ -48,6 +48,8 @@ char **create_arrtok(char *input, char **arrtok)
  */
 void vet_input(int i, char *input)
 {
+	if (input == NULL)
+		return;
 	if (i < 0)
 	{
 		write(1, "\n", 1);
