@@ -22,15 +22,17 @@ typedef struct built
 	void (*f)(char *input);
 } built_t;
 
+extern char **environ;
+
 char **_strtok(char *str, const char *delim);
 
 int _strcmp(char *s1, char *s2);
 
 char *_strcat(char *dest, const char *src, const char *delim);
 
-char *_getenv(char **env, const char *name);
+char *_getenv(const char *name);
 
-int proc(char *input, char *ipname, char **env);
+int proc(char *input, char *ipname);
 
 char *_strcpy(char *src, char *dest);
 
@@ -46,5 +48,5 @@ void vet_input(int i, char *input);
 
 void _free(unsigned int num, ...);
 
-char *transform_tok(char *command, char **env);
+char *transform_tok(char *command);
 #endif

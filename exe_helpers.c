@@ -23,23 +23,22 @@ void _free(unsigned int num, ...)
 
 /**
  * _getenv - gets the specified environment variable
- * @env: the user's environment
- * @name: the name of the environment variable to be got
- * Return: Pointer to the matching environment variable,
+ * @name: the name of the environironment variable to be got
+ * Return: Pointer to the matching environironment variable,
  * otherwise NULL.
  */
-char *_getenv(char **env, const char *name)
+char *_getenv(const char *name)
 {
 	const char *namecpy = name;
-	char *envcpy = env[0];
+	char *environcpy = environ[0];
 	int i, j;
 
-	for (i = 0; envcpy; i++, envcpy++)
+	for (i = 0; environcpy; i++, environcpy++)
 	{
-		for (j = 0; envcpy[j] == *namecpy; j++, namecpy++)
+		for (j = 0; environcpy[j] == *namecpy; j++, namecpy++)
 			;
 		if (*namecpy == '\0')
-			return (envcpy);
+			return (environcpy);
 	}
 	return (NULL);
 }
@@ -47,16 +46,15 @@ char *_getenv(char **env, const char *name)
 /**
  * transform_tok - converts a token to its full path if it can be found in PATH
  * @command: the command token to be transformed to its full path if applicable
- * @env: the environment pointer that points to the environment of the function
  * Return: a char pointer to the command either modified or not
  */
-char *transform_tok(char *command, char **env)
+char *transform_tok(char *command)
 {
 	int i, j, k;
 	char *buf, *path, *token, *pathcpy;
 	struct stat *bufstat = NULL;
 
-	path = _getenv(env, "PATH");
+	path = _getenv("PATH");
 	bufstat = malloc(sizeof(struct stat));
 	if (bufstat == NULL || command == NULL)
 	{
