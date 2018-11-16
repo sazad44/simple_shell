@@ -6,7 +6,7 @@
  * @argv: an array of pointers to the arguments to the program
  * Return: Always 0 (Success)
  */
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *envp[])
 {
 	int i;
 	size_t isize = 0;
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	{
 		i = getline(&input, &isize, stdin);
 		vet_input(i, input);
-		if (proc(input, argv[0]) == 1)
+		if (proc(input, argv[0], envp) == 1)
 		{
 			_free(1, input);
 			return (1);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 			write(1, "$ ", 2);
 			i = getline(&input, &isize, stdin);
 			vet_input(i, input);
-			if (proc(input, argv[0]) == 1)
+			if (proc(input, argv[0], envp) == 1)
 				break;
 		}
 		_free(1, input);

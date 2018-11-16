@@ -6,7 +6,7 @@
  * @ipname: the name of the program being run
  * Return: an integer to indicate success (1) or failure (0)
  */
-int proc(char *input, char *ipname)
+int proc(char *input, char *ipname, char *envp[])
 {
 	pid_t child_pid;
 	int status, i;
@@ -33,12 +33,12 @@ int proc(char *input, char *ipname)
 	if (arrtok == NULL)
 		return (1);
 	arrtok = create_arrtok(inputcpy2, arrtok);
-	arrtok[0] = transform_tok(arrtok[0]);
+	arrtok[0] = transform_tok(arrtok[0], envp);
 
 	/* Built in time */
 	if (get_cmd_func(arrtok[0]))
 	{
-		if (get_cmd_func(arrtok[0])(""))
+		if (get_cmd_func(arrtok[0])("", envp))
 		{
 			_free(2, inputcpy2, arrtok);
 			return (1);
@@ -60,7 +60,7 @@ int proc(char *input, char *ipname)
 			_free(2, inputcpy2, arrtok);
 			return (1);
 		}
-		if (execve(arrtok[0], arrtok, environ) == -1)
+		if (execve(arrtok[0], arrtok, envp) == -1)
 		{
 			_free(2, inputcpy2, arrtok);
 			perror(ipname);

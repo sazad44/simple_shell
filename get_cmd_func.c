@@ -1,6 +1,6 @@
 #include "simple_shell.h"
 
-int (*get_cmd_func(char *s))(char *input)
+int (*get_cmd_func(char *s))(char *input, char *envp[])
 {
 	built_t cmds[] = {
 	{"env", sharpie_env},

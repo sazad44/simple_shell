@@ -19,22 +19,22 @@
 typedef struct built
 {
 	char *cmd;
-	int (*f)(char *input);
+	int (*f)(char *input, char *envp[]);
 } built_t;
 
 /* Declaration of global variables */
-extern char **environ;
+/*extern char **environ;*/
 
 /* Integral function prototypes */
-int proc(char *input, char *ipname);
+int proc(char *input, char *ipname, char *envp[]);
 int niproc(char *av[]);
-char *_getenv(const char *name);
+char *_getenv(const char *name, char *envp[]);
 
 /* Builtin prototypes */
-int (*get_cmd_func(char *s))(char *input);
-int sharpie_cd(char *input);
-int sharpie_env(char *input);
-int sharpie_exit(char *input);
+int (*get_cmd_func(char *s))(char *input, char *envp[]);
+int sharpie_cd(char *input, char *envp[]);
+int sharpie_env(char *input, char *envp[]);
+int sharpie_exit(char *input, char *envp[]);
 
 /* String helper function prototypes */
 int _strcmp(char *s1, char *s2);
@@ -45,7 +45,7 @@ unsigned int _strlen(char *str);
 /* Token helper functions */
 char **create_arrtok(char *input, char **arrtok);
 int count_tokens(char *input, const char *delim);
-char *transform_tok(char *command);
+char *transform_tok(char *command, char *envp[]);
 
 /* Other helper functions */
 void vet_input(int i, char *input);
