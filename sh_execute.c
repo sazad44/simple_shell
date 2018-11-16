@@ -82,6 +82,8 @@ int niproc(char *av[])
 	int status;
 
 	av++;
+	get_cmd_func(av[0])("");
+	av[0] = transform_tok(av[0]);
 	child_pid = fork();
 	if (child_pid == -1)
 	{
