@@ -58,8 +58,11 @@ char *transform_tok(char *command, char **env)
 
 	path = _getenv(env, "PATH");
 	bufstat = malloc(sizeof(struct stat));
-	if (bufstat == NULL)
+	if (bufstat == NULL || command == NULL)
+	{
+		_free(1, bufstat);
 		return (NULL);
+	}
 	i = _strlen(path);
 	pathcpy = malloc(sizeof(char) * (i + 1));
 	if (pathcpy == NULL)

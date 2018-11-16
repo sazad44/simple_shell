@@ -10,40 +10,47 @@ int proc(char *input, char *ipname, char **env)
 {
 	pid_t child_pid;
 	int status, i;
-	char **arrtok, *token, *inputcpy;
+	char **arrtok, *token, *inputcpy, *inputcpy2;
 
 	i = _strlen(input);
 	inputcpy = malloc(sizeof(char) * (i + 1));
+	inputcpy2 = malloc(sizeof(char) * (i + 1));
 	if (inputcpy == NULL)
+	{
+		_free(1, inputcpy2);
 		return (1);
-	inputcpy = _strcpy(input, inputcpy);
-	i = count_tokens(inputcpy, " ");
-	arrtok = malloc(sizeof(token) * (i + 1));
-	if (arrtok == NULL)
+	}
+	if (inputcpy2 == NULL)
 	{
 		_free(1, inputcpy);
 		return (1);
 	}
-	arrtok = create_arrtok(input, arrtok);
+	inputcpy = _strcpy(input, inputcpy);
+	inputcpy2 = _strcpy(inputcpy, inputcpy2);
+	i = count_tokens(inputcpy, " ");
+	_free(1, inputcpy);
+	arrtok = malloc(sizeof(token) * (i + 1));
+	if (arrtok == NULL)
+		return (1);
+	arrtok = create_arrtok(inputcpy2, arrtok);
 	arrtok[0] = transform_tok(arrtok[0], env);
-	printf("%s\n", arrtok[0]);
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		_free(3, arrtok[0], inputcpy, arrtok);
+		_free(2, inputcpy2, arrtok);
 		perror("Error:");
 		return (1);
 	}
 	else if (child_pid == 0)
 	{
-		if (*inputcpy == '\0' || arrtok[0] == NULL)
+		if (arrtok[0] == NULL || *(arrtok[0]) == '\0')
 		{
-			_free(3, arrtok[0], inputcpy, arrtok);
+			_free(2, inputcpy2, arrtok);
 			return (1);
 		}
 		if (execve(arrtok[0], arrtok, env) == -1)
 		{
-			_free(3, arrtok[0], inputcpy, arrtok);
+			_free(2, inputcpy2, arrtok);
 			perror(ipname);
 			return (1);
 		}
@@ -51,7 +58,7 @@ int proc(char *input, char *ipname, char **env)
 	else if (child_pid != 0)
 	{
 		wait(&status);
-		_free(3, arrtok[0], inputcpy, arrtok);
+		_free(2, inputcpy2, arrtok);
 	}
 	return (0);
 }
