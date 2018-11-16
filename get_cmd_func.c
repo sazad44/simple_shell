@@ -1,6 +1,6 @@
 #include "simple_shell.h"
 
-void (*get_cmd_func(char *s))(char *input)
+int (*get_cmd_func(char *s))(char *input)
 {
 	built_t cmds[] = {
 	{"env", sharpie_env},
@@ -8,8 +8,8 @@ void (*get_cmd_func(char *s))(char *input)
 	{"exit", sharpie_exit},
 	{NULL, NULL}
 	};
-
 	int i = 0;
+
 	while (i < 3)
 	{
 		if (_strcmp(s, cmds[i].cmd))

@@ -37,8 +37,15 @@ int proc(char *input, char *ipname)
 
 	/* Built in time */
 	if (get_cmd_func(arrtok[0]))
-		get_cmd_func(arrtok[0])("");
-
+	{
+		if (get_cmd_func(arrtok[0])(""))
+		{
+			_free(2, inputcpy2, arrtok);
+			return (1);
+		}
+		_free(2, inputcpy2, arrtok);
+		return (0);
+	}
 	child_pid = fork();
 	if (child_pid == -1)
 	{

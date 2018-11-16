@@ -19,7 +19,7 @@
 typedef struct built
 {
 	char *cmd;
-	void (*f)(char *input);
+	int (*f)(char *input);
 } built_t;
 
 /* Declaration of global variables */
@@ -31,10 +31,10 @@ int niproc(char *av[]);
 char *_getenv(const char *name);
 
 /* Builtin prototypes */
-void (*get_cmd_func(char *s))(char *input);
-void sharpie_cd(char *input);
-void sharpie_env(char *input);
-void sharpie_exit(char *input);
+int (*get_cmd_func(char *s))(char *input);
+int sharpie_cd(char *input);
+int sharpie_env(char *input);
+int sharpie_exit(char *input);
 
 /* String helper function prototypes */
 int _strcmp(char *s1, char *s2);
