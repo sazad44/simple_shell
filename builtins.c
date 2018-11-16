@@ -1,6 +1,6 @@
 #include "simple_shell.h"
 
-void _cd(char *input)
+void sharpie_cd(char *input)
 {
 	(void)input;
 
@@ -8,7 +8,7 @@ void _cd(char *input)
 	printf("STUFF\n");
 }
 
-void _env(char *input)
+void sharpie_env(char *input)
 {
 	int i, len;
 
@@ -20,4 +20,9 @@ void _env(char *input)
 		write(1, environ[i], len);
 		write(1, "\n", 1);
 	}
+}
+
+void sharpie_exit(char *input)
+{
+	_exit(98);
 }

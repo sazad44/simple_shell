@@ -32,8 +32,9 @@ char *_getenv(const char *name);
 
 /* Builtin prototypes */
 void (*get_cmd_func(char *s))(char *input);
-void _cd(char *input);
-void _env(char *input);
+void sharpie_cd(char *input);
+void sharpie_env(char *input);
+void sharpie_exit(char *input);
 
 /* String helper function prototypes */
 int _strcmp(char *s1, char *s2);
