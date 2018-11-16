@@ -10,12 +10,12 @@ int (*get_cmd_func(char *s))(char *input)
 	};
 	int i = 0;
 
-	while (i < 3)
+	while (cmds[i].cmd)
 	{
 		if (_strcmp(s, cmds[i].cmd))
 			return (cmds[i].f);
 		i++;
 	}
 
-	return (NULL);
+	return (cmds[i].f);
 }

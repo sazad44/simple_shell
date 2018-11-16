@@ -34,22 +34,23 @@ int proc(char *input, char *ipname)
 		return (1);
 	arrtok = create_arrtok(inputcpy2, arrtok);
 	arrtok[0] = transform_tok(arrtok[0]);
+	printf("TRANSFORM TOK: %s\n", arrtok[0]);
 
 	/* Built in time */
 	if (get_cmd_func(arrtok[0]))
 	{
 		if (get_cmd_func(arrtok[0])(""))
 		{
-			_free(2, inputcpy2, arrtok);
+			_free(3, arrtok[0], inputcpy2, arrtok);
 			return (1);
 		}
-		_free(2, inputcpy2, arrtok);
+		_free(3, arrtok[0], inputcpy2, arrtok);
 		return (0);
 	}
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		_free(2, inputcpy2, arrtok);
+		_free(3, arrtok[0], inputcpy2, arrtok);
 		perror("Error:");
 		return (1);
 	}
@@ -57,12 +58,12 @@ int proc(char *input, char *ipname)
 	{
 		if (arrtok[0] == NULL || *(arrtok[0]) == '\0')
 		{
-			_free(2, inputcpy2, arrtok);
+			_free(3, arrtok[0], inputcpy2, arrtok);
 			return (1);
 		}
 		if (execve(arrtok[0], arrtok, environ) == -1)
 		{
-			_free(2, inputcpy2, arrtok);
+			_free(3, arrtok[0], inputcpy2, arrtok);
 			perror(ipname);
 			return (1);
 		}
@@ -70,7 +71,7 @@ int proc(char *input, char *ipname)
 	else if (child_pid != 0)
 	{
 		wait(&status);
-		_free(2, inputcpy2, arrtok);
+		_free(3, arrtok[0], inputcpy2, arrtok);
 	}
 	return (0);
 }
@@ -82,23 +83,27 @@ int niproc(char *av[])
 	int status;
 
 	av++;
-	get_cmd_func(av[0])("");
-	av[0] = transform_tok(av[0]);
-	child_pid = fork();
-	if (child_pid == -1)
+	if (get_cmd_func(av[0])(""))
+		return (1);
+	else
 	{
-		perror("Fork Error");
-		return (0);
-	}
-	else if (child_pid == 0)
-	{
-		if (execve(av[0], av, NULL) == -1)
+		av[0] = transform_tok(av[0]);
+		child_pid = fork();
+		if (child_pid == -1)
 		{
-			perror(prname);
+			perror("Fork Error");
 			return (0);
 		}
+		else if (child_pid == 0)
+		{
+			if (execve(av[0], av, NULL) == -1)
+			{
+				perror(prname);
+				return (0);
+			}
+		}
+		else if (child_pid != 0)
+			wait(&status);
+		return (1);
 	}
-	else if (child_pid != 0)
-		wait(&status);
-	return (1);
 }

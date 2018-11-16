@@ -30,15 +30,20 @@ void _free(unsigned int num, ...)
 char *_getenv(const char *name)
 {
 	const char *namecpy = name;
-	char *environcpy = environ[0];
-	int i, j;
+	char *environcpy;
+	int i, j, envlen;
 
-	for (i = 0; environcpy; i++, environcpy++)
+	for (i = 0; environ[i]; i++)
 	{
-		for (j = 0; environcpy[j] == *namecpy; j++, namecpy++)
+		for (j = 0; environ[i][j] == namecpy[j]; j++)
 			;
-		if (*namecpy == '\0')
+		if (namecpy[j] == '\0')
+		{
+			envlen = _strlen(environ[i] + j);
+			environcpy = malloc(sizeof(char) * (envlen + 1));
+			_strcpy(environ[i] + j, environcpy);
 			return (environcpy);
+		}
 	}
 	return (NULL);
 }
@@ -51,7 +56,7 @@ char *_getenv(const char *name)
 char *transform_tok(char *command)
 {
 	int i, j, k;
-	char *buf, *path, *token, *pathcpy;
+	char *buf, *path, *token;
 	struct stat *bufstat = NULL;
 
 	path = _getenv("PATH");
@@ -61,15 +66,7 @@ char *transform_tok(char *command)
 		_free(1, bufstat);
 		return (NULL);
 	}
-	i = _strlen(path);
-	pathcpy = malloc(sizeof(char) * (i + 1));
-	if (pathcpy == NULL)
-	{
-		_free(1, bufstat);
-		return (NULL);
-	}
-	pathcpy = _strcpy(path, pathcpy);
-	token = strtok(pathcpy, ":");
+	token = strtok(path, ":");
 	while (token)
 	{
 		i = _strlen(command), j = _strlen(token);
@@ -82,12 +79,16 @@ char *transform_tok(char *command)
 		buf = _strcat(buf, command, "/");
 		if (stat(buf, bufstat) == 0)
 		{
-			_free(2, pathcpy, bufstat);
+			_free(2, path, bufstat);
 			return (buf);
 		}
 		token = strtok(NULL, ":");
 		_free(1, buf);
 	}
-	_free(2, pathcpy, bufstat);
-	return (command);
+	buf = malloc(sizeof(char) * (i + 1));
+	if (buf == NULL)
+		return (NULL);
+	buf = _strcpy(command, buf);
+	_free(2, path, bufstat);
+	return (buf);
 }
