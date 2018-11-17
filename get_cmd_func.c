@@ -1,5 +1,12 @@
 #include "simple_shell.h"
 
+/**
+ * get_cmd_func - If possible, retrieves the function that corresponds
+ * to a built-in command such as 'env' or 'exit'.
+ * @s: the string to be compared with list of known built-in commands
+ *
+ * Return: The corresponding function if one is found, otherwise NULL.
+ */
 int (*get_cmd_func(char *s))(char *input)
 {
 	built_t cmds[] = {

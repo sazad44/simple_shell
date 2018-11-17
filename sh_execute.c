@@ -1,6 +1,29 @@
 #include "simple_shell.h"
 
 /**
+ * check_builtins - checks for built-in commands
+ * @token: the string to check if matches known built-ins
+ * @inputcpy2: the buffer to be freed if exit is triggered
+ * @arrtok: the array of strings to be freed if exit is triggered
+ * Return: an integer to indicate success (0) or failure (1)
+ */
+int check_builtins(char *token, char *inputcpy2, char **arrtok)
+{
+	if (get_cmd_func(token))
+	{
+		if (get_cmd_func(token)(""))
+		{
+			_free(3, token, inputcpy2, arrtok);
+			return (1);
+		}
+		_free(3, token, inputcpy2, arrtok);
+		return (0);
+	}
+
+	return (0);
+}
+
+/**
  * proc - a function to execute processes and tokenize a string input
  * @input: the input string to be tokenized and executed
  * @ipname: the name of the program being run
@@ -34,18 +57,8 @@ int proc(char *input, char *ipname)
 		return (1);
 	arrtok = create_arrtok(inputcpy2, arrtok);
 	arrtok[0] = transform_tok(arrtok[0]);
-
-	/* Built in time */
-	if (get_cmd_func(arrtok[0]))
-	{
-		if (get_cmd_func(arrtok[0])(""))
-		{
-			_free(3, arrtok[0], inputcpy2, arrtok);
-			return (1);
-		}
-		_free(3, arrtok[0], inputcpy2, arrtok);
-		return (0);
-	}
+	if (check_builtins(arrtok[0], inputcpy2, arrtok))
+		return (1);
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -75,6 +88,12 @@ int proc(char *input, char *ipname)
 	return (0);
 }
 
+/**
+ * niproc - handles execution of commands in non-interactive mode
+ * @av: the commands passed into non-interactive shell
+ *
+ * Return: An integer to indicate success (1) or failure (0).
+ */
 int niproc(char *av[])
 {
 	pid_t child_pid;

@@ -1,6 +1,12 @@
 #include "simple_shell.h"
 #define BUFSIZE 64
 
+/**
+ * _getline - Retrieves a line of text from standard input.
+ * @lineptr: a NULL ptr that will set to the retrieved text.
+ *
+ * Return: The number of characters read from standard input.
+ */
 ssize_t _getline(char **lineptr)
 {
 	int oldsize, bufsize = BUFSIZE;
@@ -19,8 +25,7 @@ ssize_t _getline(char **lineptr)
 		*lineptr = buffer;
 	}
 
-	do
-	{
+	do {
 		c = read(STDIN_FILENO, buffer + position, BUFSIZE);
 		if (c == -1 || !*buffer)
 			return (-1);

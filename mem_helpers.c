@@ -1,5 +1,12 @@
 #include "simple_shell.h"
 
+/**
+ * null_init - fills an allocated block of memory with null bytes.
+ * @buffer: a ptr to the block of memory to be initialized
+ * @size: size of the block of memory
+ *
+ * Return: The ptr originally passed, otherwise NULL.
+ */
 char *null_init(char *buffer, int size)
 {
 	int i;
@@ -20,6 +27,7 @@ char *null_init(char *buffer, int size)
  * @ptr: pointer to the old block of memory
  * @old_size: size of the old block of memory
  * @new_size: size the new block of memory should be
+ *
  * Return: New pointer to new block of memory if new_size differs from old_size
  * or ptr if new_size is equal to old_size
  * or NULL if new_size is zero and ptr is not NULL

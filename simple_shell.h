@@ -30,6 +30,7 @@ int proc(char *input, char *ipname);
 int niproc(char *av[]);
 char *_getenv(const char *name);
 ssize_t _getline(char **lineptr);
+int check_builtins(char *token, char *inputcpy2, char **arrtok);
 
 /* Builtin functions */
 int (*get_cmd_func(char *s))(char *input);
