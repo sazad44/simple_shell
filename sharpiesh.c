@@ -9,7 +9,6 @@
 int main(int argc, char *argv[])
 {
 	int i;
-	size_t isize = 0;
 	char *input = NULL;
 
 	if (argc > 1)
@@ -20,7 +19,7 @@ int main(int argc, char *argv[])
 	}
 	if (!isatty(STDIN_FILENO))
 	{
-		i = getline(&input, &isize, stdin);
+		i = _getline(&input);
 		vet_input(i, input);
 		if (proc(input, argv[0]) == 1)
 		{
@@ -34,10 +33,12 @@ int main(int argc, char *argv[])
 		while (1)
 		{
 			write(1, "$ ", 2);
-			i = getline(&input, &isize, stdin);
+			i = _getline(&input);
 			vet_input(i, input);
 			if (proc(input, argv[0]) == 1)
 				break;
+			if (input)
+				_free(1, input);
 		}
 		_free(1, input);
 		return (0);

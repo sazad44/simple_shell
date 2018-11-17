@@ -63,7 +63,7 @@ char *transform_tok(char *command)
 	bufstat = malloc(sizeof(struct stat));
 	if (bufstat == NULL || command == NULL)
 	{
-		_free(1, bufstat);
+		_free(2, path, bufstat);
 		return (NULL);
 	}
 	token = strtok(path, ":");

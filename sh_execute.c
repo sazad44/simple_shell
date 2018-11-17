@@ -34,7 +34,6 @@ int proc(char *input, char *ipname)
 		return (1);
 	arrtok = create_arrtok(inputcpy2, arrtok);
 	arrtok[0] = transform_tok(arrtok[0]);
-	printf("TRANSFORM TOK: %s\n", arrtok[0]);
 
 	/* Built in time */
 	if (get_cmd_func(arrtok[0]))
