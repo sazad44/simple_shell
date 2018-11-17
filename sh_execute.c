@@ -82,8 +82,11 @@ int niproc(char *av[])
 	int status;
 
 	av++;
-	if (get_cmd_func(av[0])(""))
-		return (1);
+	if (get_cmd_func(av[0]))
+	{
+		if (get_cmd_func(av[0])(""))
+			return (1);
+	}
 	else
 	{
 		av[0] = transform_tok(av[0]);
@@ -105,4 +108,5 @@ int niproc(char *av[])
 			wait(&status);
 		return (1);
 	}
+	return (0);
 }
