@@ -33,28 +33,13 @@ int proc(char *input, char *ipname)
 {
 	pid_t child_pid;
 	int status, i;
-	char **arrtok, *token, *inputcpy, *inputcpy2;
+	char **arrtok, *inputcpy, *inputcpy2;
 
 	i = _strlen(input);
-	inputcpy = malloc(sizeof(char) * (i + 1));
-	inputcpy2 = malloc(sizeof(char) * (i + 1));
-	if (inputcpy == NULL)
-	{
-		_free(1, inputcpy2);
-		return (1);
-	}
-	if (inputcpy2 == NULL)
-	{
-		_free(1, inputcpy);
-		return (1);
-	}
-	inputcpy = _strcpy(input, inputcpy);
-	inputcpy2 = _strcpy(inputcpy, inputcpy2);
+	mem_init(4, &inputcpy, i, &inputcpy2, i);
+	inputcpy = _strcpy(input, inputcpy), inputcpy2 = _strcpy(inputcpy, inputcpy2);
 	i = count_tokens(inputcpy, " ");
-	_free(1, inputcpy);
-	arrtok = malloc(sizeof(token) * (i + 1));
-	if (arrtok == NULL)
-		return (1);
+	_free(1, inputcpy), mem_init_two(2, &arrtok, i);
 	arrtok = create_arrtok(inputcpy2, arrtok);
 	arrtok[0] = transform_tok(arrtok[0]);
 	if (check_builtins(arrtok[0], inputcpy2, arrtok))

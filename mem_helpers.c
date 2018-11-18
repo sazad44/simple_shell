@@ -74,3 +74,43 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	free(ptr);
 	return (buffer);
 }
+
+/**
+ * mem_init - allocates memory with malloc and null checks the memory
+ * @num: the number of arguments
+ * Return: No Value
+ */
+void mem_init(int num, ...)
+{
+	va_list v_ls;
+	char **v_arg;
+
+	va_start(v_ls, num);
+	for (; num; num -= 2)
+	{
+		v_arg = va_arg(v_ls, char **);
+		*v_arg = malloc(sizeof(*v_arg) * (va_arg(v_ls, int) + 1));
+		if (*v_arg == NULL)
+			return;
+	}
+}
+
+/**
+ * mem_init_two - allocates memory with malloc and null checks the memory
+ * @num: the number of arguments
+ * Return: No Value
+ */
+void mem_init_two(int num, ...)
+{
+	va_list v_ls;
+	char ***v_arg;
+
+	va_start(v_ls, num);
+	for (; num; num -= 2)
+	{
+		v_arg = va_arg(v_ls, char ***);
+		*v_arg = malloc(sizeof(char *) * (va_arg(v_ls, int) + 1));
+		if (*v_arg == NULL)
+			return;
+	}
+}
