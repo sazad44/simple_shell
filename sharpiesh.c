@@ -1,22 +1,47 @@
-#include "holberton.h"
+#include "simple_shell.h"
 
-int main(void)
+/**
+ * main - Entry point
+ * @argc: the number of arguments made to the program
+ * @argv: an array of pointers to the arguments to the program
+ * Return: Always 0 (Success)
+ */
+int main(int argc, char *argv[])
 {
 	int i;
-	size_t isize = 0;
 	char *input = NULL;
 
-	while(1)
+	if (argc > 1)
 	{
-		printf("$ ");
-		getline(&input, &isize, stdin);
-		for (i = 0; input[i]; i++)
-		{
-			if (input[i] == '\n')
-				input[i] = '\0';
-		}
-		proc(input);
+		if (niproc(argv))
+			return (0);
+		return (1);
 	}
-	free(input);
+	if (!isatty(STDIN_FILENO))
+	{
+		i = _getline(&input);
+		vet_input(i, input);
+		if (proc(input, argv[0]) == 1)
+		{
+			_free(1, input);
+			return (1);
+		}
+		_free(1, input);
+	}
+	else
+	{
+		while (1)
+		{
+			write(1, "$ ", 2);
+			i = _getline(&input);
+			vet_input(i, input);
+			if (proc(input, argv[0]) == 1)
+				break;
+			if (input)
+				_free(1, input);
+		}
+		_free(1, input);
+		return (0);
+	}
 	return (0);
 }
