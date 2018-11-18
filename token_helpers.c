@@ -68,3 +68,31 @@ void vet_input(int i, char *input)
 			input[i] = '\0';
 	}
 }
+
+/**
+ * _strtok - tokenizes a string according to a certain delimiter
+ * @str: the string to be tokenized
+ * @delim: the delimiter to separate tokens
+ * @saveptr: a pointer to keep track of the beginning of the token
+ * Return Value: a character pointer to the current delimited token
+ */
+char *_strtok(char *str, const char *delim, char **saveptr)
+{
+	int i, j;
+
+	if (str)
+		*saveptr = str;
+	for (i = 0; delim[i]; i++)
+	{
+		if (delim[i] = saveptr[0])
+		{
+			saveptr[0] = '\0';
+			(*saveptr)++;
+			break;
+		}
+	}
+	for (i = 0; saveptr[i]; i++)
+	{
+		
+	}
+}
