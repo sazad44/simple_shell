@@ -16,7 +16,7 @@ int check_builtins(char *token, char *inputcpy2, char **arrtok)
 			_free(3, token, inputcpy2, arrtok);
 			return (1);
 		}
-		_free(3, token, inputcpy2, arrtok);
+		/* _free(3, token, inputcpy2, arrtok); */
 		return (0);
 	}
 
