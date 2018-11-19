@@ -2,27 +2,27 @@
 
 /**
  * sharpie_cd - Changes the user's current directory.
- * @input: the directory to be changed to
+ * @arrtok: the directory to be changed to
  *
  * Return: 0 on success, 1 on failure.
  */
-int sharpie_cd(char *input)
+int sharpie_cd(char **arrtok)
 {
-	(void)input;
-	return (1);
+	(void)arrtok;
+	return (0);
 }
 
 /**
  * sharpie_env - Prints the user's global environment variable.
- * @input: An unused string.
+ * @arrtok: An unused string.
  *
  * Return: 0 on success, 1 on failure.
  */
-int sharpie_env(char *input)
+int sharpie_env(char **arrtok)
 {
 	int i, len;
 
-	(void)input;
+	(void)arrtok;
 
 	for (i = 0; environ[i]; i++)
 	{
@@ -35,12 +35,12 @@ int sharpie_env(char *input)
 
 /**
  * sharpie_exit - Exits the user's shell.
- * @input: An unused string.
+ * @arrtok: An unused string.
  *
  * Return: 0 on success, 1 on failure.
  */
-int sharpie_exit(char *input)
+int sharpie_exit(char **arrtok)
 {
-	(void)input;
+	(void)arrtok;
 	return (1);
 }
