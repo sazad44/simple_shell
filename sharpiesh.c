@@ -8,8 +8,6 @@
  */
 int main(int argc, char *argv[], char *envp[])
 {
-	int i;
-	size_t isize = 0;
 	char *input = NULL;
 
 	if (argc > 1)
@@ -20,9 +18,8 @@ int main(int argc, char *argv[], char *envp[])
 	}
 	if (!isatty(STDIN_FILENO))
 	{
-		i = getline(&input, &isize, stdin);
-		vet_input(i, input);
-		if (proc(input, argv[0], envp) == 1)
+		get_input(&input);
+		if (proc(input, argv[0]) == 1)
 		{
 			_free(1, input);
 			return (1);
@@ -31,13 +28,15 @@ int main(int argc, char *argv[], char *envp[])
 	}
 	else
 	{
+		signal(SIGINT, check_signal);
 		while (1)
 		{
 			write(1, "$ ", 2);
-			i = getline(&input, &isize, stdin);
-			vet_input(i, input);
-			if (proc(input, argv[0], envp) == 1)
+			get_input(&input);
+			if (proc(input, argv[0]) == 1)
 				break;
+			if (input)
+				_free(1, input);
 		}
 		_free(1, input);
 		return (0);

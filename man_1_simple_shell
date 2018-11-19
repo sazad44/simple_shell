@@ -1,0 +1,220 @@
+.Dd November 20, 2018
+.Os
+.Dt SHARPIESH 1
+.Sh NAME
+.Nm sharpiesh
+.Nd command interpreter (shell)
+.Sh SYNOPSIS
+.Nm
+.Bk -words
+.Op Ar command_file Oo Ar argument ... Oc
+.Ek
+.Sh DESCRIPTION
+.Nm
+is a command interpreter for the system. It takes in the name of a command_file
+and any arguments that that command can accept and runs the process in a child
+process fork producing the output of that command.
+.Nm
+then continues providing a prompt for the next command until the user decides to
+exit. The .Nm has been engineered to reduce memory leaks and initiate processes
+as efficiently as possible.
+.Ss Overview
+The
+.Nm
+is a program that reads input from either piped or inline
+standard input or the terminal, analyzes them, and executes the commands
+referenced. It is a program that runs when a user initiates it through another
+shell. The shell can handle one command and its many arguments by utilizing
+tokenization and token transformation to cross-check commands with directories
+in the
+.Pa PATH
+environmental variable.
+It incorporates interactive use and provides support for inputs given in
+non-interactive methods while still handling them normally requiring no
+further manipulation.
+That is, commands
+can be typed directly to the running shell or can be put into a file and
+the file can be executed directly by the shell in addition to inputs typed
+after the shell on the command line.
+.Ss Invocation
+If no arguments are present and if the standard input of the shell
+is connected to a terminal, then the shell is considered an interactive shell.
+An interactive shell generally prompts before each command and handles
+programming and command errors differently (as described below).
+When first starting,
+the shell inspects the number of arguments, and if it is greater than 1 then
+the argument following the name of the program are executed.
+If command line arguments have been specified, then
+the shell treats the first argument as the name of a command to execute.
+Otherwise, the shell
+reads commands from its standard input.
+.Ss Argument List Processing
+As of right now there are no special flags to modify the processing of the
+argument list.
+.Ss Commands
+Essentially, a line is read and if the first
+word of the line is a
+.Nm
+built-in or a Linux built-in then it will be executed.
+Otherwise, it will return an error.
+.Ss Simple Commands
+If a command is given then it is concatenated with the directories
+provided in the
+.Pa PATH
+and checked to be a valid executable or not. If so then it is
+transformed. If not then
+.Nm
+attempts to execute it anyway so unless it is the full path to a built-in,
+it will return an error.
+.Ss Search and Execution
+There are three types of commands: shell functions, builtin commands, and
+normal programs -- and the command is searched for (by name) in that order.
+They each are executed in a different way.
+.Pp
+When a shell function is executed, all of the shell positional parameters
+(except $0, which remains unchanged) are set to the arguments of the shell
+function.
+Then the command given in the function definition is executed.
+This all occurs within the current shell.
+.Pp
+Shell builtins are executed internally to the shell, without initiating a
+new process.
+.Pp
+Otherwise, if the command name doesn't match a function or builtin, the
+command is searched for as a normal program in the file system (as
+described in the next section).
+When a normal program is executed, the shell runs the program,
+passing the arguments and the environment to the program.
+The effect will be as if a
+new shell had been invoked to handle the function.
+.Ss Path Search
+When locating a command, the shell first looks to see if it has a shell
+function by that name.
+Then it looks for a builtin command by that name.
+If a builtin command is not found, one thing happens:
+.Bl -enum
+.It
+The shell searches each entry in
+.Pa PATH
+in turn for the command.
+The value of the
+.Pa PATH
+variable should be a series of entries separated by colons.
+Each entry consists of a directory name.
+The current directory may be indicated
+implicitly by an empty directory name, or explicitly by a single period.
+.El
+.Ss Command Exit Status
+Each command has an exit status that can influence the behaviour
+of other shell commands.
+The paradigm is that a command exits
+with zero for normal or success, and non-zero for failure,
+error, or a false indication.
+The man page for each command
+should indicate the various exit codes and what they mean.
+Additionally, the builtin commands return exit codes, as does
+an executed shell function.
+.Sh EXIT STATUS
+Errors that are detected by the shell, such as a syntax error, will cause the
+shell to exit with a non-zero exit status.
+If the shell is not an
+interactive shell, the execution of the shell file will be aborted.
+Otherwise
+the shell will return the exit status of the last command executed, or
+if the exit builtin is used with a numeric argument, it will return the
+argument.
+.Sh EXAMPLE
+In order to use the
+.Nm
+there are three methods: interactive, non-interactive, and inline.
+.Bl -tag -width
+.It Ev Interactive: \./sharpiesh
+$ ls
+[Files & Directories]
+$
+.It Ev Non-Interactive: echo ls | \./sharpiesh
+[Files & Directories]
+.It Ev Inline: \./sharpiesh ls
+[Files & Directories]
+.Sh ENVIRONMENT
+.Bl -tag -width MAILCHECK
+.It Ev HOME
+Set automatically by
+.Xr login 1
+from the user's login directory in the password file
+.Pq Xr passwd 4 .
+This environment variable also functions as the default argument for the
+cd builtin.
+.It Ev PATH
+The default search path for executables.
+See the above section
+.Sx Path Search .
+.It Ev CDPATH
+The search path used with the cd builtin.
+.It Ev MAIL
+The name of a mail file, that will be checked for the arrival of new mail.
+Overridden by
+.Ev MAILPATH .
+.It Ev MAILCHECK
+The frequency in seconds that the shell checks for the arrival of mail
+in the files specified by the
+.Ev MAILPATH
+or the
+.Ev MAIL
+file.
+If set to 0, the check will occur at each prompt.
+.It Ev MAILPATH
+A colon
+.Dq \&:
+separated list of file names, for the shell to check for incoming mail.
+This environment setting overrides the
+.Ev MAIL
+setting.
+There is a maximum of 10 mailboxes that can be monitored at once.
+.It Ev PS1
+The primary prompt string, which defaults to
+.Dq $\  ,
+unless you are the superuser, in which case it defaults to
+.Dq #\  .
+.It Ev PS2
+The secondary prompt string, which defaults to
+.Dq \*[Gt]\  .
+.It Ev PS4
+Output before each line when execution trace (set -x) is enabled,
+defaults to
+.Dq +\  .
+.It Ev IFS
+Input Field Separators.
+This is normally set to
+.Aq space ,
+.Aq tab ,
+and
+.Aq newline .
+See the
+.Sx White Space Splitting
+section for more details.
+.It Ev TERM
+The default terminal setting for the shell.
+This is inherited by
+children of the shell, and is used in the history editing modes.
+.It Ev HISTSIZE
+The number of lines in the history buffer for the shell.
+.It Ev PWD
+The logical value of the current working directory.  This is set by the
+.Ic cd
+command.
+.It Ev OLDPWD
+The previous logical value of the current working directory.  This is set by
+the
+.Ic cd
+command.
+.It Ev PPID
+The process ID of the parent process of the shell.
+.El
+.Sh SEE ALSO
+.Xr sh 1
+.Sh HISTORY
+.Nm
+is an implementation of /bin/sh modeled after its features and behaviors
+.Sh BUGS
+When typing yes as an input there is an infinite output of the character 'y'

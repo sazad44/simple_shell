@@ -1,20 +1,28 @@
 #include "simple_shell.h"
 
-int sharpie_cd(char *input, char *envp[])
+/**
+ * sharpie_cd - Changes the user's current directory.
+ * @arrtok: the directory to be changed to
+ *
+ * Return: 0 on success, 1 on failure.
+ */
+int sharpie_cd(char **arrtok)
 {
-	(void)input;
-	(void)envp;
-
-	printf("CD\n");
-	printf("STUFF\n");
+	(void)arrtok;
 	return (0);
 }
 
-int sharpie_env(char *input, char *envp[])
+/**
+ * sharpie_env - Prints the user's global environment variable.
+ * @arrtok: An unused string.
+ *
+ * Return: 0 on success, 1 on failure.
+ */
+int sharpie_env(char **arrtok)
 {
 	int i, len;
 
-	(void)input;
+	(void)arrtok;
 
 	for (i = 0; envp[i]; i++)
 	{
@@ -25,9 +33,14 @@ int sharpie_env(char *input, char *envp[])
 	return (0);
 }
 
-int sharpie_exit(char *input, char *envp[])
+/**
+ * sharpie_exit - Exits the user's shell.
+ * @arrtok: An unused string.
+ *
+ * Return: 0 on success, 1 on failure.
+ */
+int sharpie_exit(char **arrtok)
 {
-	(void)input;
-	(void)envp;
+	(void)arrtok;
 	return (1);
 }
