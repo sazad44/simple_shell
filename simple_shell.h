@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -19,7 +20,7 @@
 typedef struct built
 {
 	char *cmd;
-	int (*f)(char *input);
+	int (*f)(char **arrtok);
 } built_t;
 
 /* Declaration of global variables */
@@ -33,10 +34,16 @@ ssize_t _getline(char **lineptr);
 int check_builtins(char *token, char *inputcpy2, char **arrtok);
 
 /* Builtin functions */
-int (*get_cmd_func(char *s))(char *input);
-int sharpie_cd(char *input);
-int sharpie_env(char *input);
-int sharpie_exit(char *input);
+int (*get_cmd_func(char *s))(char **arrtok);
+int sharpie_cd(char **arrtok);
+int sharpie_env(char **arrtok);
+int sharpie_exit(char **arrtok);
+int sharpie_setenv(char **arrtok);
+
+/* Environment modification functions */
+char *_getrealenv(const char *name);
+int _setenv(const char *name, const char *value, int overwrite);
+int _unsetenv(const char *name);
 
 /* Memory helper functions */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
@@ -54,6 +61,10 @@ unsigned int _strlen(char *str);
 char **create_arrtok(char *input, char **arrtok);
 int count_tokens(char *input, const char *delim);
 char *transform_tok(char *command);
+
+/* Signal helper functions */
+int _atoi(char *s);
+void check_signal(int sig_num);
 
 /* Other helper functions */
 void vet_input(int i, char *input);
