@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
+		signal(SIGINT, check_signal);
 		while (1)
 		{
 			write(1, "$ ", 2);
