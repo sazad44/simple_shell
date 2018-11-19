@@ -47,9 +47,8 @@ char **create_arrtok(char *input, char **arrtok)
 }
 
 /**
- * vet_input - gets input from command line or standard input
+ * get_input - gets input from command line or standard input
  * @input: a pointer to a pointer to the input
- * @i: the result of getline to vet the input
  * Return: No value
  */
 void get_input(char **input)
