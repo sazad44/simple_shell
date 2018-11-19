@@ -11,7 +11,7 @@ int check_builtins(char *token, char *inputcpy2, char **arrtok)
 {
 	if (get_cmd_func(token))
 	{
-		if (get_cmd_func(token)(""))
+		if (get_cmd_func(token)(arrtok))
 		{
 			_free(3, token, inputcpy2, arrtok);
 			return (1);
@@ -88,7 +88,7 @@ int niproc(char *av[])
 	av++;
 	if (get_cmd_func(av[0]))
 	{
-		if (get_cmd_func(av[0])(""))
+		if (get_cmd_func(av[0])(av))
 			return (1);
 	}
 	else
