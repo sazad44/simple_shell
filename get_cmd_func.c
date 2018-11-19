@@ -7,10 +7,12 @@
  *
  * Return: The corresponding function if one is found, otherwise NULL.
  */
-int (*get_cmd_func(char *s))(char *input)
+int (*get_cmd_func(char *s))(char **arrtok)
 {
 	built_t cmds[] = {
 	{"env", sharpie_env},
+	{"setenv", sharpie_setenv},
+	{"unsetenv", sharpie_setenv},
 	{"cd", sharpie_cd},
 	{"exit", sharpie_exit},
 	{NULL, NULL}
