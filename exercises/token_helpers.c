@@ -84,7 +84,7 @@ char *_strtok(char *str, const char *delim, char **saveptr)
 		*saveptr = str;
 	for (i = 0; delim[i]; i++)
 	{
-		if (delim[i] == *saveptr[0])
+		if (delim[i] == saveptr[0])
 		{
 			*saveptr[0] = '\0';
 			(*saveptr)++;
