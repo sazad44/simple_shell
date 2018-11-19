@@ -52,19 +52,21 @@ char **create_arrtok(char *input, char **arrtok)
  * @i: the result of getline to vet the input
  * Return: No value
  */
-void vet_input(int i, char *input)
+void get_input(char **input)
 {
-	if (input == NULL)
+	int i;
+
+	i = _getline(input);
+	if (*input == NULL)
 		return;
 	if (i < 0)
 	{
 		write(1, "\n", 1);
-		free(input);
+		free(*input);
 		exit(98);
 	}
-	for (i = 0; input[i]; i++)
-	{
-		if (input[i] == '\n')
-			input[i] = '\0';
-	}
+	for (i = 0; (*input)[i]; i++)
+		;
+	if ((*input)[i - 1] == '\n')
+		(*input)[i - 1] = '\0';
 }

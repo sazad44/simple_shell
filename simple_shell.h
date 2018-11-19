@@ -67,7 +67,7 @@ int _atoi(char *s);
 void check_signal(int sig_num);
 
 /* Other helper functions */
-void vet_input(int i, char *input);
+void get_input(char **input);
 void _free(unsigned int num, ...);
 
 #endif
