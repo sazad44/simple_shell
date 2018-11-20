@@ -56,7 +56,7 @@ int sharpie_exit(char *input);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char *null_init(char *buffer, int bufsize);
 void mem_init(int num, ...);
-void mem_init_two(int num, ...);
+void minit2(int num, ...);
 
 /* String helper functions */
 int _strcmp(char *s1, char *s2);

@@ -50,13 +50,13 @@ int check_builtins(char *token, char *cpy2, char **arrtok)
  */
 exit_t *proc(char *input, char *ipname, exit_t *estat)
 {
-	pid_t child_pid, int status, i;
+	pid_t child_pid;
+	int status, i;
 	char **arrtok, *inputcpy, *cpy2;
 
 	i = _strlen(input), mem_init(4, &inputcpy, i, &cpy2, i);
 	inputcpy = _strcpy(input, inputcpy), cpy2 = _strcpy(inputcpy, cpy2);
-	i = count_tokens(inputcpy, " "), _free(1, inputcpy);
-	mem_init_two(2, &arrtok, i);
+	i = count_tokens(inputcpy, " "), _free(1, inputcpy), minit2(2, &arrtok, i);
 	arrtok = create_arrtok(cpy2, arrtok), arrtok[0] = transform_tok(arrtok[0]);
 	if (check_builtins(arrtok[0], cpy2, arrtok))
 	{
