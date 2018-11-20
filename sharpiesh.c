@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	}
 	if (!isatty(STDIN_FILENO))
 	{
-		i = _getline(&input), vet_input(i, input);
+		i = _getline(&input), vet_input(i, input, estat);
 		estat = proc(input, argv[0], estat);
 		if (estat->exit == 1)
 		{
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 		{
 			write(1, "$ ", 2);
 			i = _getline(&input);
-			vet_input(i, input);
+			vet_input(i, input, estat);
 			estat = proc(input, argv[0], estat);
 			if (estat->exit == 1)
 				break;
