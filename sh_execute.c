@@ -34,11 +34,10 @@ int check_builtins(char *token, char *cpy2, char **arrtok)
 			_free(3, token, cpy2, arrtok);
 			return (1);
 		}
-		_free(3, token, cpy2, arrtok);
 		return (0);
 	}
 
-	return (0);
+	return (-1);
 }
 
 /**
@@ -51,16 +50,22 @@ int check_builtins(char *token, char *cpy2, char **arrtok)
 exit_t *proc(char *input, char *ipname, exit_t *estat)
 {
 	pid_t child_pid;
-	int status, i;
+	int status, i, builtin;
 	char **arrtok, *inputcpy, *cpy2;
 
 	i = _strlen(input), mem_init(4, &inputcpy, i, &cpy2, i);
 	inputcpy = _strcpy(input, inputcpy), cpy2 = _strcpy(inputcpy, cpy2);
 	i = count_tokens(inputcpy, " "), _free(1, inputcpy), minit2(2, &arrtok, i);
 	arrtok = create_arrtok(cpy2, arrtok), arrtok[0] = transform_tok(arrtok[0]);
-	if (check_builtins(arrtok[0], cpy2, arrtok))
+	builtin = check_builtins(arrtok[0], cpy2, arrtok);
+	if (builtin == 1)
 	{
 		estat = change_status(estat, "Exit", estat->code, 1);
+		return (estat);
+	}
+	else if (builtin == 0)
+	{
+		estat = change_status(estat, NULL, 0, 0);
 		return (estat);
 	}
 	child_pid = fork();
@@ -71,18 +76,7 @@ exit_t *proc(char *input, char *ipname, exit_t *estat)
 	}
 	else if (child_pid == 0)
 	{
-		if (arrtok[0] == NULL || *(arrtok[0]) == '\0')
-		{
-			_free(3, arrtok[0], cpy2, arrtok);
-			estat = change_status(estat, NULL, estat->code, 1);
-			return (estat);
-		}
-		if (execve(arrtok[0], arrtok, environ) == -1)
-		{
-			_free(3, arrtok[0], cpy2, arrtok), perror(ipname);
-			estat = change_status(estat, NULL, 127, 1);
-			return (estat);
-		}
+		return (child_processing(estat, arrtok, cpy2, ipname));
 	}
 	else if (child_pid != 0)
 	{

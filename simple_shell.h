@@ -14,8 +14,9 @@
 /**
  * struct built - Struct built
  *
- * @cmd: The command
- * @f: The function associated
+ * @message: The exit message
+ * @code: The exit code
+ * @exit: 1 if should exit shell, 0 if not.
  */
 typedef struct exit_status
 {
@@ -46,6 +47,7 @@ int niproc(char *av[]);
 char *_getenv(const char *name);
 ssize_t _getline(char **lineptr);
 int check_builtins(char *token, char *inputcpy2, char **arrtok);
+exit_t *child_processing(exit_t *estat, char **arrtok, char *cpy2, char *ipname);
 
 /* Builtin functions */
 int (*get_cmd_func(char *s))(char **arrtok);
