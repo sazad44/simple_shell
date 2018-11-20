@@ -47,28 +47,26 @@ char **create_arrtok(char *input, char **arrtok)
 }
 
 /**
- * get_input - gets input from command line or standard input
+ * vet_input - gets input from command line or standard input
  * @input: a pointer to a pointer to the input
- * @estat: the struct that tracks exit codes
+ * @i: the result of getline to vet the input
  * Return: No value
  */
-void get_input(char **input, exit_t *estat)
+void vet_input(int i, char *input)
 {
-	int i;
-
-	i = _getline(input);
-	if (*input == NULL)
+	if (input == NULL)
 		return;
 	if (i < 0)
 	{
 		write(1, "\n", 1);
-		free(*input);
-		exit(estat->code);
+		free(input);
+		exit(98);
 	}
-	for (i = 0; (*input)[i]; i++)
-		;
-	if ((*input)[i - 1] == '\n')
-		(*input)[i - 1] = '\0';
+	for (i = 0; input[i]; i++)
+	{
+		if (input[i] == '\n')
+			input[i] = '\0';
+	}
 }
 
 /**
@@ -76,7 +74,7 @@ void get_input(char **input, exit_t *estat)
  * @str: the string to be tokenized
  * @delim: the delimiter to separate tokens
  * @saveptr: a pointer to keep track of the beginning of the token
- * Return: a character pointer to the current delimited token
+ * Return Value: a character pointer to the current delimited token
  */
 char *_strtok(char *str, const char *delim, char **saveptr)
 {
@@ -86,7 +84,7 @@ char *_strtok(char *str, const char *delim, char **saveptr)
 		*saveptr = str;
 	for (i = 0; delim[i]; i++)
 	{
-		if (delim[i] == *saveptr[0])
+		if (delim[i] == saveptr[0])
 		{
 			*saveptr[0] = '\0';
 			(*saveptr)++;
@@ -106,30 +104,4 @@ char *_strtok(char *str, const char *delim, char **saveptr)
 		}
 	}
 	return (*saveptr);
-}
-
-/**
- * tokenize_cmds - tokenizes the input string into a pointer array of commands
- * @input: a character pointer to the input string in memory
- * @cmdtok: a pointer array that points to different sets of commands and args
- * Return: a pointer array for the commands
- */
-char **tokenize_cmds(char *input, char **cmdtok)
-{
-	int i;
-	char *token, *inputcpy;
-
-	i = _strlen(input), mem_init(2, &inputcpy, i);
-	inputcpy = _strcpy(input, inputcpy);
-	i = count_tokens(inputcpy, "\n;");
-	minit2(2, &cmdtok, i);
-	_free(1, inputcpy);
-	token = strtok(input, "\n;");
-	for (i = 0; token; i++)
-	{
-		cmdtok[i] = token;
-		token = strtok(NULL, "\n;");
-	}
-	cmdtok[i] = NULL;
-	return (cmdtok);
 }

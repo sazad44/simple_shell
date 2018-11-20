@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -11,10 +12,11 @@
 #include <sys/stat.h>
 
 /**
- * struct built - Struct built
+ * struct exit_status - Struct built
  *
- * @cmd: The command
- * @f: The function associated
+ * @message: The exit message
+ * @code: The exit code
+ * @exit: 1 if should exit shell, 0 if not.
  */
 typedef struct exit_status
 {
@@ -32,7 +34,7 @@ typedef struct exit_status
 typedef struct built
 {
 	char *cmd;
-	int (*f)(char *input);
+	int (*f)(char **arrtok);
 } built_t;
 
 /* Declaration of global variables */
@@ -45,12 +47,20 @@ int niproc(char *av[]);
 char *_getenv(const char *name);
 ssize_t _getline(char **lineptr);
 int check_builtins(char *token, char *inputcpy2, char **arrtok);
+exit_t *child_proc(exit_t *estat, char **arrtok, char *cpy2, char *ipname);
+exit_t *pipex(char **argv);
 
 /* Builtin functions */
-int (*get_cmd_func(char *s))(char *input);
-int sharpie_cd(char *input);
-int sharpie_env(char *input);
-int sharpie_exit(char *input);
+int (*get_cmd_func(char *s))(char **arrtok);
+int sharpie_cd(char **arrtok);
+int sharpie_env(char **arrtok);
+int sharpie_exit(char **arrtok);
+int sharpie_setenv(char **arrtok);
+
+/* Environment modification functions */
+char *_getrealenv(const char *name);
+int _setenv(const char *name, const char *value, int overwrite);
+int _unsetenv(const char *name);
 
 /* Memory helper functions */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
@@ -63,13 +73,20 @@ int _strcmp(char *s1, char *s2);
 char *_strcat(char *dest, const char *src, const char *delim);
 char *_strcpy(char *src, char *dest);
 unsigned int _strlen(char *str);
+int colon_check(char *path, char *command, char **buf, struct stat **bufstat);
 
 /* Token helper functions */
 char **create_arrtok(char *input, char **arrtok);
 int count_tokens(char *input, const char *delim);
 char *transform_tok(char *command);
+char **tokenize_cmds(char *input, char **cmdtok);
+
+/* Signal helper functions */
+int _atoi(char *s);
+void check_signal(int sig_num);
 
 /* Other helper functions */
+void get_input(char **input, exit_t *estat);
 void vet_input(int i, char *input, exit_t *estat);
 void _free(unsigned int num, ...);
 

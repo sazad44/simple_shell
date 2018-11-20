@@ -55,7 +55,7 @@ char *_getenv(const char *name)
  */
 char *transform_tok(char *command)
 {
-	int i, j, k;
+	int i, j, k, col_flag = 0;
 	char *buf, *path, *token;
 	struct stat *bufstat = NULL;
 
@@ -66,13 +66,17 @@ char *transform_tok(char *command)
 		_free(2, path, bufstat);
 		return (NULL);
 	}
+	col_flag = colon_check(path, command, &buf, &bufstat);
+	if (col_flag == 1)
+	{
+		_free(2, path, bufstat);
+		return (buf);
+	}
 	token = strtok(path, ":");
 	while (token)
 	{
 		i = _strlen(command), j = _strlen(token);
-		buf = malloc(sizeof(char) * (i + j + 3));
-		if (buf == NULL)
-			return (NULL);
+		mem_init(2, &buf, (i + j + 2));
 		for (k = 0; k < (i + j); k++)
 			buf[k] = '\0';
 		buf = _strcat(buf, token, NULL);
@@ -85,10 +89,36 @@ char *transform_tok(char *command)
 		token = strtok(NULL, ":");
 		_free(1, buf);
 	}
-	buf = malloc(sizeof(char) * (i + 1));
-	if (buf == NULL)
-		return (NULL);
+	mem_init(2, &buf, i);
 	buf = _strcpy(command, buf);
 	_free(2, path, bufstat);
 	return (buf);
+}
+
+/**
+ * pipex - conducts processing of non-terminal input e.g. pipe
+ * @argv: pointer array of pointers to the beginning of arguments fed into func
+ * Return: a structure pointer to error struct
+ */
+exit_t *pipex(char **argv)
+{
+	int i;
+	char **cmdtok = NULL, *input;
+	exit_t *estat, estat_real;
+
+	estat = &estat_real;
+	estat->message = "Error", estat->code = 0, estat->exit = 0;
+	get_input(&input, estat);
+	cmdtok = tokenize_cmds(input, cmdtok);
+	for (i = 0; cmdtok[i]; i++)
+	{
+		estat = proc(cmdtok[i], argv[0], estat);
+		if (estat->exit == 1)
+		{
+			_free(2, input, cmdtok);
+			return (estat);
+		}
+	}
+	_free(2, input, cmdtok);
+	return (estat);
 }

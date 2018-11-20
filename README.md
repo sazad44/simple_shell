@@ -26,13 +26,13 @@ $ git clone https://github.com/wescottsharples/simple_shell.git
 ### 2. Compile
 After downloading the source code, you can use the following command to compile a working version of the shell:
 ```
-gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+gcc -Wall -Werror -Wextra -pedantic *.c -o 'sharpiesh'
 ```
 
 ### 3. Use
 `sharpiesh` should now be ready to use. To start the shell in interactive mode, please use the following command:
 ```
-./hsh
+./sharpiesh
 ```
 You should now see a `$`, which means `sharpiesh` is awaiting input. 
 ## Executing Commands

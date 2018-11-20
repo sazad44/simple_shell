@@ -89,3 +89,31 @@ char *_strcat(char *dest, const char *src, const char *delim)
 
 	return (dest);
 }
+
+/**
+ * colon_check - checks for doubled or higher tier colon groups in PATH
+ * @path: pointer to PATH string to be accessed
+ * @command: pointer to command string to be concatenated
+ * @buf: a pointer to the pointer of our buffer to hold the concatenated comman
+ * @bufstat: a pointer to a pointer to a struct to provide a place for file inf
+ * Return: 0 upon failure and 1 upon success
+ */
+int colon_check(char *path, char *command, char **buf, struct stat **bufstat)
+{
+	int i, j;
+
+	for (i = 0; path[i]; i++)
+	{
+		if (path[i] == ':' && path[i + 1] == ':')
+		{
+			j = _strlen(command);
+			mem_init(2, buf, (j + 2));
+			*buf = null_init(*buf, (j + 3));
+			*buf = _strcat(*buf, ".", NULL);
+			*buf = _strcat(*buf, command, "/");
+			if (!stat(*buf, *bufstat))
+				return (1);
+		}
+	}
+	return (0);
+}
