@@ -50,9 +50,10 @@ char **create_arrtok(char *input, char **arrtok)
  * vet_input - gets input from command line or standard input
  * @input: a pointer to a pointer to the input
  * @i: the result of getline to vet the input
+ * @estat: the struct that tracks exit codes
  * Return: No value
  */
-void vet_input(int i, char *input)
+void vet_input(int i, char *input, exit_t *estat)
 {
 	if (input == NULL)
 		return;
@@ -60,7 +61,7 @@ void vet_input(int i, char *input)
 	{
 		write(1, "\n", 1);
 		free(input);
-		exit(0);
+		exit(estat->code);
 	}
 	for (i = 0; input[i]; i++)
 	{
