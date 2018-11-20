@@ -60,7 +60,7 @@ void vet_input(int i, char *input)
 	{
 		write(1, "\n", 1);
 		free(input);
-		exit(98);
+		exit(0);
 	}
 	for (i = 0; input[i]; i++)
 	{
