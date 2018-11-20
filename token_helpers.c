@@ -49,9 +49,10 @@ char **create_arrtok(char *input, char **arrtok)
 /**
  * get_input - gets input from command line or standard input
  * @input: a pointer to a pointer to the input
+ * @estat: the struct that tracks exit codes
  * Return: No value
  */
-void get_input(char **input)
+void get_input(char **input, exit_t *estat)
 {
 	int i;
 
@@ -62,7 +63,7 @@ void get_input(char **input)
 	{
 		write(1, "\n", 1);
 		free(*input);
-		exit(0);
+		exit(estat->code);
 	}
 	for (i = 0; (*input)[i]; i++)
 		;

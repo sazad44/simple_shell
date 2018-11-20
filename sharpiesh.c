@@ -9,7 +9,10 @@
 int main(int argc, char *argv[])
 {
 	char *input = NULL;
+	exit_t *estat, estat_real;
 
+	estat = &estat_real;
+	estat->message = "Error", estat->code = 0, estat->exit = 0;
 	if (argc > 1)
 	{
 		if (niproc(argv))
@@ -18,8 +21,9 @@ int main(int argc, char *argv[])
 	}
 	if (!isatty(STDIN_FILENO))
 	{
-		get_input(&input);
-		if (proc(input, argv[0]) == 1)
+		get_input(&input, estat);
+		estat = proc(input, argv[0], estat);
+		if (estat->exit == 1)
 		{
 			_free(1, input);
 			return (1);
@@ -32,14 +36,15 @@ int main(int argc, char *argv[])
 		while (1)
 		{
 			write(1, "$ ", 2);
-			get_input(&input);
-			if (proc(input, argv[0]) == 1)
+			get_input(&input, estat);
+			estat = proc(input, argv[0], estat);
+			if (estat->exit == 1)
 				break;
 			if (input)
 				_free(1, input);
 		}
 		_free(1, input);
-		return (0);
+		exit(estat->code);
 	}
 	return (0);
 }

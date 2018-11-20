@@ -96,11 +96,11 @@ void mem_init(int num, ...)
 }
 
 /**
- * mem_init_two - allocates memory with malloc and null checks the memory
+ * minit2 - allocates memory with malloc and null checks the memory
  * @num: the number of arguments
  * Return: No Value
  */
-void mem_init_two(int num, ...)
+void minit2(int num, ...)
 {
 	va_list v_ls;
 	char ***v_arg;
