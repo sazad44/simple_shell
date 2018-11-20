@@ -1,0 +1,15 @@
+#include "simple_shell.h"
+
+int main(void)
+{
+	int i;
+	char arr[] = "Hello Holberton School";
+	char *token;
+
+	for (i = 0; token; i++)
+	{
+		token = _strtok(&arr);
+		printf("%s\n", token);
+	}
+	return (0);
+}

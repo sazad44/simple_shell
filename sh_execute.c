@@ -53,6 +53,7 @@ exit_t *proc(char *input, char *ipname, exit_t *estat)
 	int status, i, builtin;
 	char **arrtok, *inputcpy, *cpy2;
 
+
 	i = _strlen(input), mem_init(4, &inputcpy, i, &cpy2, i);
 	inputcpy = _strcpy(input, inputcpy), cpy2 = _strcpy(inputcpy, cpy2);
 	i = count_tokens(inputcpy, " "), _free(1, inputcpy), minit2(2, &arrtok, i);
@@ -76,7 +77,7 @@ exit_t *proc(char *input, char *ipname, exit_t *estat)
 	}
 	else if (child_pid == 0)
 	{
-		return (child_processing(estat, arrtok, cpy2, ipname));
+		return (child_proc(estat, arrtok, cpy2, ipname));
 	}
 	else if (child_pid != 0)
 	{

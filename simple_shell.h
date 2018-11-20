@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 
 /**
- * struct built - Struct built
+ * struct exit_status - Struct built
  *
  * @message: The exit message
  * @code: The exit code
@@ -47,7 +47,8 @@ int niproc(char *av[]);
 char *_getenv(const char *name);
 ssize_t _getline(char **lineptr);
 int check_builtins(char *token, char *inputcpy2, char **arrtok);
-exit_t *child_processing(exit_t *estat, char **arrtok, char *cpy2, char *ipname);
+exit_t *child_proc(exit_t *estat, char **arrtok, char *cpy2, char *ipname);
+exit_t *pipex(char **argv);
 
 /* Builtin functions */
 int (*get_cmd_func(char *s))(char **arrtok);
@@ -72,11 +73,13 @@ int _strcmp(char *s1, char *s2);
 char *_strcat(char *dest, const char *src, const char *delim);
 char *_strcpy(char *src, char *dest);
 unsigned int _strlen(char *str);
+int colon_check(char *path, char *command, char **buf, struct stat **bufstat);
 
 /* Token helper functions */
 char **create_arrtok(char *input, char **arrtok);
 int count_tokens(char *input, const char *delim);
 char *transform_tok(char *command);
+char **tokenize_cmds(char *input, char **cmdtok);
 
 /* Signal helper functions */
 int _atoi(char *s);
