@@ -10,7 +10,10 @@ int main(int argc, char *argv[])
 {
 	int i;
 	char *input = NULL;
+	exit_t *estat, estat_real;
 
+	estat = &estat_real;
+	estat->message = "Error", estat->code = 0, estat->exit = 0;
 	if (argc > 1)
 	{
 		if (niproc(argv))
@@ -19,9 +22,9 @@ int main(int argc, char *argv[])
 	}
 	if (!isatty(STDIN_FILENO))
 	{
-		i = _getline(&input);
-		vet_input(i, input);
-		if (proc(input, argv[0]) == 1)
+		i = _getline(&input), vet_input(i, input);
+		estat = proc(input, argv[0], estat);
+		if (estat->exit == 1)
 		{
 			_free(1, input);
 			return (1);
@@ -35,13 +38,14 @@ int main(int argc, char *argv[])
 			write(1, "$ ", 2);
 			i = _getline(&input);
 			vet_input(i, input);
-			if (proc(input, argv[0]) == 1)
+			estat = proc(input, argv[0], estat);
+			if (estat->exit == 1)
 				break;
 			if (input)
 				_free(1, input);
 		}
 		_free(1, input);
-		return (0);
+		exit(estat->code);
 	}
 	return (0);
 }
