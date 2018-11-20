@@ -50,8 +50,7 @@ int check_builtins(char *token, char *cpy2, char **arrtok)
  */
 exit_t *proc(char *input, char *ipname, exit_t *estat)
 {
-	pid_t child_pid;
-	int status, i;
+	pid_t child_pid, int status, i;
 	char **arrtok, *inputcpy, *cpy2;
 
 	i = _strlen(input), mem_init(4, &inputcpy, i, &cpy2, i);
@@ -75,6 +74,7 @@ exit_t *proc(char *input, char *ipname, exit_t *estat)
 		if (arrtok[0] == NULL || *(arrtok[0]) == '\0')
 		{
 			_free(3, arrtok[0], cpy2, arrtok);
+			estat = change_status(estat, NULL, estat->code, 1);
 			return (estat);
 		}
 		if (execve(arrtok[0], arrtok, environ) == -1)
