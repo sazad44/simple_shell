@@ -6,9 +6,10 @@
  * @argv: an array of pointers to the arguments to the program
  * Return: Always 0 (Success)
  */
-int main(int argc, char *argv[], char *envp[])
+int main(int argc, char *argv[])
 {
-	char *input = NULL;
+	int i;
+	char *input = NULL, **cmdtok = NULL;
 
 	if (argc > 1)
 	{
@@ -19,12 +20,16 @@ int main(int argc, char *argv[], char *envp[])
 	if (!isatty(STDIN_FILENO))
 	{
 		get_input(&input);
-		if (proc(input, argv[0]) == 1)
+		cmdtok = tokenize_cmds(input, cmdtok);
+		for (i = 0; cmdtok[i]; i++)
 		{
-			_free(1, input);
-			return (1);
+			if (proc(cmdtok[i], argv[0]) == 1)
+			{
+				_free(2, input, cmdtok);
+				return (1);
+			}
 		}
-		_free(1, input);
+		_free(2, input, cmdtok);
 	}
 	else
 	{
@@ -33,12 +38,16 @@ int main(int argc, char *argv[], char *envp[])
 		{
 			write(1, "$ ", 2);
 			get_input(&input);
-			if (proc(input, argv[0]) == 1)
-				break;
+			cmdtok = tokenize_cmds(input, cmdtok);
+			for (i = 0; cmdtok[i]; i++)
+			{
+				if (proc(cmdtok[i], argv[0]) == 1)
+					break;
+			}
 			if (input)
-				_free(1, input);
+				_free(2, input, cmdtok);
 		}
-		_free(1, input);
+		_free(2, cmdtok, input);
 		return (0);
 	}
 	return (0);

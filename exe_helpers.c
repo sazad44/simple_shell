@@ -27,7 +27,7 @@ void _free(unsigned int num, ...)
  * Return: Pointer to the matching environironment variable,
  * otherwise NULL.
  */
-char *_getenv(const char *name, char *envp[])
+char *_getenv(const char *name)
 {
 	const char *namecpy = name;
 	char *environcpy;
@@ -53,13 +53,13 @@ char *_getenv(const char *name, char *envp[])
  * @command: the command token to be transformed to its full path if applicable
  * Return: a char pointer to the command either modified or not
  */
-char *transform_tok(char *command, char *envp[])
+char *transform_tok(char *command)
 {
 	int i, j, k;
 	char *buf, *path, *token;
 	struct stat *bufstat = NULL;
 
-	path = _getenv("PATH", envp);
+	path = _getenv("PATH");
 	bufstat = malloc(sizeof(struct stat));
 	if (bufstat == NULL || command == NULL)
 	{

@@ -75,7 +75,7 @@ void get_input(char **input)
  * @str: the string to be tokenized
  * @delim: the delimiter to separate tokens
  * @saveptr: a pointer to keep track of the beginning of the token
- * Return Value: a character pointer to the current delimited token
+ * Return: a character pointer to the current delimited token
  */
 char *_strtok(char *str, const char *delim, char **saveptr)
 {
@@ -105,4 +105,30 @@ char *_strtok(char *str, const char *delim, char **saveptr)
 		}
 	}
 	return (*saveptr);
+}
+
+/**
+ * tokenize_cmds - tokenizes the input string into a pointer array of commands
+ * @input: a character pointer to the input string in memory
+ * @cmdtok: a pointer array that points to different sets of commands and args
+ * Return: a pointer array for the commands
+ */
+char **tokenize_cmds(char *input, char **cmdtok)
+{
+	int i;
+	char *token, *inputcpy;
+
+	i = _strlen(input), mem_init(2, &inputcpy, i);
+	inputcpy = _strcpy(input, inputcpy);
+	i = count_tokens(inputcpy, "\n;");
+	mem_init_two(2, &cmdtok, i);
+	_free(1, inputcpy);
+	token = strtok(input, "\n;");
+	for (i = 0; token; i++)
+	{
+		cmdtok[i] = token;
+		token = strtok(NULL, "\n;");
+	}
+	cmdtok[i] = NULL;
+	return (cmdtok);
 }

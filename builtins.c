@@ -24,10 +24,10 @@ int sharpie_env(char **arrtok)
 
 	(void)arrtok;
 
-	for (i = 0; envp[i]; i++)
+	for (i = 0; environ[i]; i++)
 	{
-		len = _strlen(envp[i]);
-		write(1, envp[i], len);
+		len = _strlen(environ[i]);
+		write(1, environ[i], len);
 		write(1, "\n", 1);
 	}
 	return (0);

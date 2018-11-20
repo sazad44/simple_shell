@@ -24,7 +24,7 @@ typedef struct built
 } built_t;
 
 /* Declaration of global variables */
-/*extern char **environ;*/
+extern char **environ;
 
 /* Integral functions */
 int proc(char *input, char *ipname);
@@ -60,7 +60,8 @@ unsigned int _strlen(char *str);
 /* Token helper functions */
 char **create_arrtok(char *input, char **arrtok);
 int count_tokens(char *input, const char *delim);
-char *transform_tok(char *command, char *envp[]);
+char *transform_tok(char *command);
+char **tokenize_cmds(char *input, char **cmdtok);
 
 /* Signal helper functions */
 int _atoi(char *s);

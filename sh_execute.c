@@ -13,7 +13,7 @@ int check_builtins(char *token, char *inputcpy2, char **arrtok)
 	{
 		if (get_cmd_func(token)(arrtok))
 		{
-			_free(3, token, inputcpy2, arrtok);
+			_free(2, inputcpy2, arrtok);
 			return (1);
 		}
 		/* _free(3, token, inputcpy2, arrtok); */
@@ -29,7 +29,7 @@ int check_builtins(char *token, char *inputcpy2, char **arrtok)
  * @ipname: the name of the program being run
  * Return: an integer to indicate success (1) or failure (0)
  */
-int proc(char *input, char *ipname, char *envp[])
+int proc(char *input, char *ipname)
 {
 	pid_t child_pid;
 	int status, i;
@@ -41,17 +41,6 @@ int proc(char *input, char *ipname, char *envp[])
 	i = count_tokens(inputcpy, " ");
 	_free(1, inputcpy), mem_init_two(2, &arrtok, i);
 	arrtok = create_arrtok(inputcpy2, arrtok);
-	/* Built in time */
-	if (get_cmd_func(arrtok[0]))
-	{
-		if (get_cmd_func(arrtok[0])("", envp))
-		{
-			_free(2, inputcpy2, arrtok);
-			return (1);
-		}
-		_free(2, inputcpy2, arrtok);
-		return (0);
-	}
 	if (check_builtins(arrtok[0], inputcpy2, arrtok))
 		return (1);
 	arrtok[0] = transform_tok(arrtok[0]);
@@ -69,7 +58,7 @@ int proc(char *input, char *ipname, char *envp[])
 			_free(3, arrtok[0], inputcpy2, arrtok);
 			return (1);
 		}
-		if (execve(arrtok[0], arrtok, envp) == -1)
+		if (execve(arrtok[0], arrtok, environ) == -1)
 		{
 			_free(3, arrtok[0], inputcpy2, arrtok);
 			perror(ipname);
