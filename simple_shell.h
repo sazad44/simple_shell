@@ -70,7 +70,7 @@ int count_tokens(char *input, const char *delim);
 char *transform_tok(char *command);
 
 /* Other helper functions */
-void vet_input(int i, char *input);
+void vet_input(int i, char *input, exit_t *estat);
 void _free(unsigned int num, ...);
 
 #endif
