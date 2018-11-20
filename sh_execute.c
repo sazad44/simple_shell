@@ -34,9 +34,9 @@ int check_builtins(char *token, char *cpy2, char **arrtok)
 			_free(3, token, cpy2, arrtok);
 			return (1);
 		}
+		_free(3, token, cpy2, arrtok);
 		return (0);
 	}
-
 	return (-1);
 }
 
