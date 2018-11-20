@@ -8,11 +8,11 @@ Modeled after the first [Unix shell](https://en.wikipedia.org/wiki/Thompson_shel
 |--|--|
 | `exit` | exits the shell |
 | `env` | prints the current environment |
-| `setenv` | sets an environment variable  |
-| `unsetenv` | removes an environment variable |
-| `cd` | changes the current working directory |
-| `alias` | creates an alias |
-| `unalias` | removes an alias |
+
+### Additional Features
+- Handles file as piped input
+- Handles multiple commands seperated by ';' delimeter
+- Contains no memory leaks
 
 ## Getting Started
 A starter's guide to setting up `sharpiesh`.
