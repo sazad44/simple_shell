@@ -72,8 +72,6 @@ char *transform_tok(char *command)
 		_free(2, path, bufstat);
 		return (buf);
 	}
-	else
-		_free(1, buf);
 	token = strtok(path, ":");
 	while (token)
 	{
