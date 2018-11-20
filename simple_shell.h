@@ -16,6 +16,19 @@
  * @cmd: The command
  * @f: The function associated
  */
+typedef struct exit_status
+{
+	char *message;
+	int code;
+	int exit;
+} exit_t;
+
+/**
+ * struct built - Struct built
+ *
+ * @cmd: The command
+ * @f: The function associated
+ */
 typedef struct built
 {
 	char *cmd;
@@ -26,7 +39,8 @@ typedef struct built
 extern char **environ;
 
 /* Integral functions */
-int proc(char *input, char *ipname);
+exit_t *proc(char *input, char *ipname, exit_t *estat);
+exit_t *change_status(exit_t *estat, char *msg, int cd, int flag);
 int niproc(char *av[]);
 char *_getenv(const char *name);
 ssize_t _getline(char **lineptr);
